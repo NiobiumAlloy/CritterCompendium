@@ -15,13 +15,14 @@ Currently only supports version 26.1.2
 | Command                   | Description                                                                                                                                      | Default |
 |:--------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------|---------|
 | `/chelp`                  | Displays the help menu listing available commands.                                                                                               |         |
-| `/ctoggle`                | Enables/Disables the mod other than /chelp and /ctoggle                                                                                          | True    |
+| `/ctoggle`                | Enables/Disables the mod other than commands                                                                                                     | True    |
 | `/c m [zone]`             | outputs the critters missing in a specific zone (`c.*`, `f.*`, `h.*`, `i.*`) or all zones if omitted to client side chat                         |         |
 | `/c anounceZoneCompleted` | Exactly what is sounds like                                                                                                                      | True    |
 | `/c includeTimestamps`    | Includes time to complete with zone/all completed messages                                                                                       | False   |
 | `/c announceMacaw`        | Sends /pc message when a macaw spawns (known bug that if a macaw is alive as you get warped into another run it will announce the message again) | False   |
 | `/c announceHotspot`      | Toggles automatic party chat announcement when your hotspot is revealed.                                                                         | False   |
 | `/c enablePartyCommand`   | Toggles the party command                                                                                                                        | True    |
+| `/clink`                  | sends github . com/NiobiumAlloy/CritterCompendium in party chat                                                                                  |         |
 | `/c outputDebugToChat`    | Toggles debug chat messages on critter catch.                                                                                                    | False   |
 
 

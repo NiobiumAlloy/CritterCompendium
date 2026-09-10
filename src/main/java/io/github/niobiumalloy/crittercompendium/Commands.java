@@ -6,6 +6,7 @@ import io.github.niobiumalloy.crittercompendium.util.Config;
 import io.github.niobiumalloy.crittercompendium.util.ConfigManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.network.chat.Component;
 
@@ -38,6 +39,15 @@ public class Commands {
                     FabricClientCommandSource src = context.getSource();
                     src.sendFeedback(Component.literal("§6Mod enabled set to §f" + config.isModEnabled));
                     ConfigManager.save();
+                    return 1;
+                })
+        );
+
+        dispatcher.register(ClientCommands.literal("clink")
+                .executes(context -> {
+                    Minecraft client = Minecraft.getInstance();
+                    if (client.player == null) return 1;
+                    client.player.connection.sendCommand("/pc github . com/NiobiumAlloy/CritterCompendium");
                     return 1;
                 })
         );

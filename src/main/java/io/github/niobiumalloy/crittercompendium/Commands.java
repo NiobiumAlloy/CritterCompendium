@@ -47,7 +47,7 @@ public class Commands {
                 .executes(context -> {
                     Minecraft client = Minecraft.getInstance();
                     if (client.player == null) return 1;
-                    client.player.connection.sendCommand("/pc github . com/NiobiumAlloy/CritterCompendium");
+                    client.player.connection.sendCommand("pc github . com/NiobiumAlloy/CritterCompendium");
                     return 1;
                 })
         );

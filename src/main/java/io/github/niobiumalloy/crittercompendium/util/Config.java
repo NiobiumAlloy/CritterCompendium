@@ -10,4 +10,5 @@ public class Config {
     public boolean announceHotspot = false;
     public boolean enablePartyCommand = true;
     public boolean outputDebugToChat = false;
+    public boolean hideyhoAudioQueues = true;
 }

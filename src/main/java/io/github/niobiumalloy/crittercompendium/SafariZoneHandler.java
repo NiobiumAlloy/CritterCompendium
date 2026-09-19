@@ -3,6 +3,8 @@ package io.github.niobiumalloy.crittercompendium;
 import io.github.niobiumalloy.crittercompendium.util.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.Sound;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 
 import java.util.regex.Matcher;
@@ -95,6 +97,25 @@ public class SafariZoneHandler {
         if ((isCapture || isLootShare) && isRunActive) {
             new Critter(cleanMessage);
         }
+
+        if (Config.INSTANCE.hideyhoAudioQueues) {
+            hideyhoChatHandler(cleanMessage);
+        }
+
+    }
+
+    private static void hideyhoChatHandler(String cleanMessage) {
+        LocalPlayer localPlayer = Minecraft.getInstance().player;
+        if (localPlayer == null) return;
+        if (cleanMessage.equals("Select an option: [Sure] [No thanks...]")) {
+            localPlayer.playSound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
+        }
+
+        if (cleanMessage.equals("[MOB] Hideyho: No peeking!")) {
+            localPlayer.playSound(SoundEvents.PLAYER_TELEPORT, 1.0f, 1.0f);
+        }
+
+
     }
 
     private static void announceHotspots(String cleanMessage) {

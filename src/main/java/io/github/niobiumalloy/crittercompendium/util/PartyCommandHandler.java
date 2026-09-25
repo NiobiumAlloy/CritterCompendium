@@ -16,5 +16,8 @@ public class PartyCommandHandler {
         else if (lowerMessage.equals("!m") || lowerMessage.equals("!missing")) {
             Critter.missingCritterPartyCommand("");
         }
+        else if (lowerMessage.equals("!breakdown")) {
+            Critter.printRunBreakdown(true);
+        }
     }
 }

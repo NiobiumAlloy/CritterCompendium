@@ -26,8 +26,12 @@ public class Commands {
                     src.sendFeedback(Component.literal("§e/c announceHotspot §7- Toggles Hotspot PC announcement"));
                     src.sendFeedback(Component.literal("§e/c enablePartyCommand §7- Toggles the !m and !missing party commands"));
                     src.sendFeedback(Component.literal("§e/c outputDebugToChat §7- Toggles debug messaging"));
+                    src.sendFeedback(Component.literal("§e/c showRunBreakdown §7- Toggles client side breakdown output"));
+                    src.sendFeedback(Component.literal("§e/c partyChatBreakdown §7- Toggles party chat breakdown output"));
+                    src.sendFeedback(Component.literal("§e/c breakdown §7- Manually trigger run breakdown"));
                     src.sendFeedback(Component.literal("§6--- Party Command ---"));
                     src.sendFeedback(Component.literal("§e!m [zone] or !missing [zone] §7- Broadcasts missing critters for a specified zone or all"));
+                    src.sendFeedback(Component.literal("§e!breakdown §7- Broadcasts run breakdown"));
 
                     return 1;
                 })
@@ -104,6 +108,30 @@ public class Commands {
                             FabricClientCommandSource src = context.getSource();
                             src.sendFeedback(Component.literal("§6outputDebugToChat set to §f" + config.outputDebugToChat));
                             ConfigManager.save();
+                            return 1;
+                        })
+                )
+                .then(ClientCommands.literal("showRunBreakdown")
+                        .executes(context -> {
+                            config.showRunBreakdown = !config.showRunBreakdown;
+                            FabricClientCommandSource src = context.getSource();
+                            src.sendFeedback(Component.literal("§6showRunBreakdown set to §f" + config.showRunBreakdown));
+                            ConfigManager.save();
+                            return 1;
+                        })
+                )
+                .then(ClientCommands.literal("partyChatBreakdown")
+                        .executes(context -> {
+                            config.partyChatBreakdown = !config.partyChatBreakdown;
+                            FabricClientCommandSource src = context.getSource();
+                            src.sendFeedback(Component.literal("§6partyChatBreakdown set to §f" + config.partyChatBreakdown));
+                            ConfigManager.save();
+                            return 1;
+                        })
+                )
+                .then(ClientCommands.literal("breakdown")
+                        .executes(context -> {
+                            Critter.printRunBreakdown(false);
                             return 1;
                         })
                 )

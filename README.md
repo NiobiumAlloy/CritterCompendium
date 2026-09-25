@@ -1,8 +1,8 @@
 # Critter Compendium
 
-A client-side Fabric mod designed to help with unique safari runs by tracking the critters that have been caught, announcing when zones are done, and offering both a client side command and a party command to display what critters have yet to be caught 
+A client-side Fabric mod designed to help with unique safari runs by tracking the critters that have been caught, announcing when zones are done, offering commands to display what critters have yet to be caught, and providing a detailed breakdown of run statistics (who caught what and zone completion times).
 
-This mod DOES NOT locate/highlight any critters or floordrops, only keeps track of caught critter messages in chat and compare that to a list of all critters 
+This mod DOES NOT locate/highlight any critters or floordrops, only keeps track of caught critter messages in chat and compares that to a list of all critters.
 
 Currently only supports version 26.1.2
 
@@ -25,6 +25,9 @@ Currently only supports version 26.1.2
 | `/c hideyhoAudioQueues`   | Toggles playing a sound when [sure] can be pressed for hideyho and when hideyho teleports                                                        | True    |
 | `/clink`                  | sends github . com/NiobiumAlloy/CritterCompendium in party chat                                                                                  |         |
 | `/c outputDebugToChat`    | Toggles debug chat messages on critter catch.                                                                                                    | False   |
+| `/c showRunBreakdown`     | Toggles client-side run breakdown output at the end of a safari run.                                                                             | True    |
+| `/c partyChatBreakdown`   | Toggles automatic party chat run breakdown output at the end of a safari run.                                                                    | False   |
+| `/c breakdown`            | Manually triggers the run breakdown output (client-side only).                                                                                   |         |
 
 
 ---
@@ -37,10 +40,12 @@ When party chat tracking is active, players can trigger automated responses by t
   Broadcasts the list of missing critters across all incomplete zones to party chat.
 - **`!m <zone>`** or **`!missing <zone>`**  
   Broadcasts missing critters for a specific zone:
-  - `!m cavern` / `!m c`
-  - `!m forest` / `!m f`
-  - `!m haunted` / `!m h`
-  - `!m icy` / `!m i`
+    - `!m cavern` / `!m c`
+    - `!m forest` / `!m f`
+    - `!m haunted` / `!m h`
+    - `!m icy` / `!m i`
+- **`!breakdown`**  
+  Broadcasts the current run breakdown (catch statistics by player and zone completion times) to party chat.
 
 ---
 

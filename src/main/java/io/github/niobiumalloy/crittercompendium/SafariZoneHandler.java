@@ -3,7 +3,6 @@ package io.github.niobiumalloy.crittercompendium;
 import io.github.niobiumalloy.crittercompendium.util.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 
@@ -65,6 +64,7 @@ public class SafariZoneHandler {
 
     public static void triggerGracefulEnd() {
         if (isRunActive && endRunDelay <= 0) {
+            Critter.printRunBreakdown(false);
             Critter.clear();
             endRunDelay = 20;
         }
@@ -79,6 +79,9 @@ public class SafariZoneHandler {
 
         return String.format("%02d:%02d", minutes, seconds);
     }
+
+    public static boolean isRunActive() { return isRunActive; }
+    public static long getRunStartTime() { return runStartTime; }
 
     public static void safariChatHandler(String cleanMessage) {
         if (cleanMessage == null || cleanMessage.isEmpty()) return;
@@ -101,7 +104,6 @@ public class SafariZoneHandler {
         if (Config.INSTANCE.hideyhoAudioQueues) {
             hideyhoChatHandler(cleanMessage);
         }
-
     }
 
     private static void hideyhoChatHandler(String cleanMessage) {
@@ -114,8 +116,6 @@ public class SafariZoneHandler {
         if (cleanMessage.equals("[MOB] Hideyho: No peeking!")) {
             localPlayer.playSound(SoundEvents.PLAYER_TELEPORT, 1.0f, 1.0f);
         }
-
-
     }
 
     private static void announceHotspots(String cleanMessage) {

@@ -79,7 +79,10 @@ public class Critter {
 
     private static void loadSafariMessages() {
         File messagesFile = getMessagesFile();
-        if (!messagesFile.exists()) return;
+        if (!messagesFile.exists()) {
+            saveSafariMessages();
+            return;
+        }
 
         try (Reader reader = new InputStreamReader(new FileInputStream(messagesFile), StandardCharsets.UTF_8)) {
             SafariMessages loaded = GSON.fromJson(reader, SafariMessages.class);
@@ -88,6 +91,7 @@ public class Critter {
             e.printStackTrace();
         }
     }
+
 
     private static void saveSafariMessages() {
         File messagesFile = getMessagesFile();

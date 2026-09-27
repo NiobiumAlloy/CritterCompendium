@@ -6,6 +6,8 @@ This mod DOES NOT locate/highlight any critters or floordrops, only keeps track 
 
 Currently only supports version 26.1.2
 
+Edit the zone and run completed messages via the config/crittercompendium-safari-messages.json file
+
 ---
 
 ## Commands

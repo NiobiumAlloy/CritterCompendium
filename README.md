@@ -1,6 +1,6 @@
 # Critter Compendium
 
-A client-side Fabric mod designed to help with unique safari runs by tracking the critters that have been caught, announcing when zones are done, offering commands to display what critters have yet to be caught, and providing a detailed breakdown of run statistics (who caught what and zone completion times).
+A client-side Fabric mod designed to help with unique safari runs by tracking the critters that have been caught, announcing when zones are done, offering commands to display what critters have yet to be caught, providing a detailed breakdown of run statistics (who caught what and zone completion times), and tracking Personal Bests (PBs) for each zone and full runs.
 
 This mod DOES NOT locate/highlight any critters or floordrops, only keeps track of caught critter messages in chat and compares that to a list of all critters.
 
@@ -21,6 +21,10 @@ Edit the zone and run completed messages via the config/crittercompendium-safari
 | `/c m [zone]`             | outputs the critters missing in a specific zone (`c.*`, `f.*`, `h.*`, `i.*`) or all zones if omitted to client side chat                         |         |
 | `/c anounceZoneCompleted` | Exactly what is sounds like                                                                                                                      | True    |
 | `/c includeTimestamps`    | Includes time to complete with zone/all completed messages                                                                                       | False   |
+| `/c appendGlobalPB`       | Toggles appending the global PB at the end of zone cleared messages (e.g., `(PB: 00:00)` or `(NEW PB!)`).                                        | True    |
+| `/c appendIndividualPB`   | Toggles appending the individual player PB at the end of zone cleared messages.                                                                  | False   |
+| `/c pb global`            | Lists the recorded global PBs for each zone and full runs.                                                                                       |         |
+| `/c pb player <name>`     | Lists the recorded PBs for the specified player.                                                                                                 |         |
 | `/c announceMacaw`        | Sends /pc message when a macaw spawns (known bug that if a macaw is alive as you get warped into another run it will announce the message again) | False   |
 | `/c announceHotspot`      | Toggles automatic party chat announcement when your hotspot is revealed.                                                                         | False   |
 | `/c enablePartyCommand`   | Toggles the party command                                                                                                                        | True    |
@@ -59,6 +63,8 @@ The mod creates and manages configurations inside your `.minecraft/config/` dire
    Mod config file
 2. **`config/crittercompendium-safari-messages.json`**  
    Stores customizable completion messages sent when a zone is finished.
+3. **`config/crittercompendium-pbs.json`**  
+   Stores the global and individual player personal best (PB) times for each zone and full runs.
 
 ---
 

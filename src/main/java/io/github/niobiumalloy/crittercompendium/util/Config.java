@@ -12,4 +12,6 @@ public class Config {
     public boolean outputDebugToChat = false;
     public boolean showRunBreakdown = true;
     public boolean partyChatBreakdown = false;
+    public boolean appendGlobalPB = true;
+    public boolean appendIndividualPB = false;
 }

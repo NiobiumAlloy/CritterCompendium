@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.niobiumalloy.crittercompendium.util.Config;
 import io.github.niobiumalloy.crittercompendium.util.ConfigManager;
+import io.github.niobiumalloy.crittercompendium.util.PBManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,10 @@ public class Commands {
                     src.sendFeedback(Component.literal("§e/c m [zone] §7- Client side missing critters output"));
                     src.sendFeedback(Component.literal("§e/c anounceZoneCompleted §7- Toggles completion announcements"));
                     src.sendFeedback(Component.literal("§e/c includeTimestamps §7- Toggles timestamps appended to completion"));
+                    src.sendFeedback(Component.literal("§e/c appendGlobalPB §7- Toggles appending global PB to clear messages"));
+                    src.sendFeedback(Component.literal("§e/c appendIndividualPB §7- Toggles appending individual PB to clear messages"));
+                    src.sendFeedback(Component.literal("§e/c pb global §7- Lists global PBs for each zone"));
+                    src.sendFeedback(Component.literal("§e/c pb player <name> §7- Lists PBs for the specified player"));
                     src.sendFeedback(Component.literal("§e/c announceMacaw §7- Toggles Macaw PC announcement on spawn"));
                     src.sendFeedback(Component.literal("§e/c announceHotspot §7- Toggles Hotspot PC announcement"));
                     src.sendFeedback(Component.literal("§e/c enablePartyCommand §7- Toggles the !m and !missing party commands"));
@@ -75,6 +80,42 @@ public class Commands {
                             return 1;
                         })
                 )
+                .then(ClientCommands.literal("appendGlobalPB")
+                        .executes(context -> {
+                            config.appendGlobalPB = !config.appendGlobalPB;
+                            FabricClientCommandSource src = context.getSource();
+                            src.sendFeedback(Component.literal("§6appendGlobalPB set to §f" + config.appendGlobalPB));
+                            ConfigManager.save();
+                            return 1;
+                        })
+                )
+                .then(ClientCommands.literal("appendIndividualPB")
+                        .executes(context -> {
+                            config.appendIndividualPB = !config.appendIndividualPB;
+                            FabricClientCommandSource src = context.getSource();
+                            src.sendFeedback(Component.literal("§6appendIndividualPB set to §f" + config.appendIndividualPB));
+                            ConfigManager.save();
+                            return 1;
+                        })
+                )
+                .then(ClientCommands.literal("pb")
+                        .then(ClientCommands.literal("global")
+                                .executes(context -> {
+                                    PBManager.printGlobalPBs();
+                                    return 1;
+                                })
+                        )
+                        .then(ClientCommands.literal("player")
+                                .then(ClientCommands.argument("playerName", StringArgumentType.word())
+                                        .executes(context -> {
+                                            String player = StringArgumentType.getString(context, "playerName");
+                                            PBManager.printPlayerPBs(player);
+                                            return 1;
+                                        })
+                                )
+                        )
+                )
+                // ----------------------------
                 .then(ClientCommands.literal("announceMacaw")
                         .executes(context -> {
                             config.announceMacaw = !config.announceMacaw;

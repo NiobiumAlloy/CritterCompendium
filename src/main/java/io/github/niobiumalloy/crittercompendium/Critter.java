@@ -3,6 +3,8 @@ package io.github.niobiumalloy.crittercompendium;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.niobiumalloy.crittercompendium.util.Config;
+import io.github.niobiumalloy.crittercompendium.util.PBManager;
+import io.github.niobiumalloy.crittercompendium.util.PBManager.PBResult;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -167,27 +169,43 @@ public class Critter {
         boolean justFinishedHaunted = !hauntedDone && uniqueCrittersCaught.containsAll(HAUNTED_CRITTERS);
         boolean justFinishedIcy = !icyDone && uniqueCrittersCaught.containsAll(ICY_CRITTERS);
 
+        long currentSeconds = (System.currentTimeMillis() - SafariZoneHandler.getRunStartTime()) / 1000;
+        Set<String> activePlayers = new HashSet<>();
+        for (CatchRecord record : catchRecords) {
+            activePlayers.add(record.playerName);
+        }
+        String localPlayer = Minecraft.getInstance().player != null ? Minecraft.getInstance().player.getName().getString() : "Unknown";
+        PBResult cavernResult = null;
+        PBResult forestResult = null;
+        PBResult hauntedResult = null;
+        PBResult icyResult = null;
+
         if (justFinishedCavern) {
             cavernDone = true;
             cavernCompleteTimeStr = SafariZoneHandler.getRunDurationString();
+            cavernResult = PBManager.recordPB("Cavern", currentSeconds, activePlayers, localPlayer);
         }
         if (justFinishedForest) {
             forestDone = true;
             forestCompleteTimeStr = SafariZoneHandler.getRunDurationString();
+            forestResult = PBManager.recordPB("Forest", currentSeconds, activePlayers, localPlayer);
         }
         if (justFinishedHaunted) {
             hauntedDone = true;
             hauntedCompleteTimeStr = SafariZoneHandler.getRunDurationString();
+            hauntedResult = PBManager.recordPB("Haunted", currentSeconds, activePlayers, localPlayer);
         }
         if (justFinishedIcy) {
             icyDone = true;
             icyCompleteTimeStr = SafariZoneHandler.getRunDurationString();
+            icyResult = PBManager.recordPB("Icy", currentSeconds, activePlayers, localPlayer);
         }
 
         if (cavernDone && forestDone && hauntedDone && icyDone) {
             allDone = true;
+            PBResult allResult = PBManager.recordPB("All", currentSeconds, activePlayers, localPlayer);
             if (Config.INSTANCE.announceZoneCompleted) {
-                broadcastMessage(appendTimestamp(safariMessages.allUniquesMsg));
+                broadcastMessage(appendTimestamp(safariMessages.allUniquesMsg, allResult));
             }
 
             Minecraft client = Minecraft.getInstance();
@@ -199,18 +217,35 @@ public class Critter {
         }
 
         if (Config.INSTANCE.announceZoneCompleted) {
-            if (justFinishedCavern) broadcastMessage(appendTimestamp(safariMessages.cavernMsg));
-            if (justFinishedForest) broadcastMessage(appendTimestamp(safariMessages.forestMsg));
-            if (justFinishedHaunted) broadcastMessage(appendTimestamp(safariMessages.hauntedMsg));
-            if (justFinishedIcy) broadcastMessage(appendTimestamp(safariMessages.icyMsg));
+            if (justFinishedCavern) broadcastMessage(appendTimestamp(safariMessages.cavernMsg, cavernResult));
+            if (justFinishedForest) broadcastMessage(appendTimestamp(safariMessages.forestMsg, forestResult));
+            if (justFinishedHaunted) broadcastMessage(appendTimestamp(safariMessages.hauntedMsg, hauntedResult));
+            if (justFinishedIcy) broadcastMessage(appendTimestamp(safariMessages.icyMsg, icyResult));
         }
     }
 
-    private static String appendTimestamp(String message) {
+    private static String appendTimestamp(String message, PBResult pbResult) {
+        String msg = message;
         if (Config.INSTANCE.includeTimestamps) {
-            return message + " in " + SafariZoneHandler.getRunDurationString();
+            msg += " in " + SafariZoneHandler.getRunDurationString();
         }
-        return message;
+
+        if (pbResult != null) {
+            if (Config.INSTANCE.appendGlobalPB) {
+                if (pbResult.newGlobal) {
+                    msg += " (NEW PB!)";
+                } else {
+                    msg += " (PB: " + PBManager.formatTime(pbResult.previousGlobal) + ")";
+                }
+            } else if (Config.INSTANCE.appendIndividualPB) {
+                if (pbResult.newIndividual) {
+                    msg += " (NEW PB!)";
+                } else {
+                    msg += " (PB: " + PBManager.formatTime(pbResult.previousIndividual) + ")";
+                }
+            }
+        }
+        return msg;
     }
 
     public static void broadcastMessage(String msg) {

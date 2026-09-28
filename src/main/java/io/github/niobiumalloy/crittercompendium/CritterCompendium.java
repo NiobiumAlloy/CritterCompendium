@@ -3,6 +3,7 @@ package io.github.niobiumalloy.crittercompendium;
 import io.github.niobiumalloy.crittercompendium.util.ClientTickHandler;
 import io.github.niobiumalloy.crittercompendium.util.ConfigManager;
 import io.github.niobiumalloy.crittercompendium.util.GameChatHandler;
+import io.github.niobiumalloy.crittercompendium.util.PBManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -18,6 +19,7 @@ public class CritterCompendium implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ConfigManager.load();
+        PBManager.load();
 
         ClientTickEvents.END_CLIENT_TICK.register(ClientTickHandler::onTick);
         ClientCommandRegistrationCallback.EVENT.register(Commands::register);
